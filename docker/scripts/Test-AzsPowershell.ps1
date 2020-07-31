@@ -13,7 +13,11 @@ param (
 
 $resourceGroup = "azurestack-container-rg"
 $resourceLocation = "northwest"
-$globalLogFile = "log-" + (Get-Date).ticks + ".txt"
+if (-not (test-path "/home/azurestack/log"))
+{
+    New-Item -ItemType Directory -Path "/home/azurestack/log/"
+}
+$globalLogFile = "/home/azurestack/log/log-" + (Get-Date).ticks + ".txt"
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 
 

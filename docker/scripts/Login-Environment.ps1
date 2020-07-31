@@ -21,8 +21,12 @@ param
     [string] $DirectoryTenantId,
 
     [Parameter(Mandatory=$true, ParameterSetName='UserCredential')]
-    [ValidateNotNull()]
-    [PSCredential] $Credential,
+    [ValidateNotNullOrEmpty()]
+    [string] $ClientID,
+
+    [Parameter(Mandatory=$true, ParameterSetName='UserCredential')]
+    [ValidateNotNullOrEmpty()]
+    [String] $ClientSecret,
 
     [Parameter(Mandatory=$true, ParameterSetName='ServicePrincipal')]
     [ValidateNotNullOrEmpty()]
@@ -39,7 +43,7 @@ param
     [string] $SubscriptionId
 )
 
-if (($azureEnvironment = Get-AzEnvironment | Where Name -EQ $Name))
+if (($azureEnvironment = Get-AzEnvironment | Where-Object Name -EQ $Name))
 {
     Write-Verbose -Message "Azure Environment '$Name' already initialized" -Verbose
 }
@@ -56,10 +60,12 @@ $azureAccountParams = @{
     ServicePrincipal = $true
 }
 
-if ($Credential)
+if ($ClientID)
 {
+    $secureSecret = ConvertTo-SecureString $ClientSecret -AsPlainText -Force
+    [PSCredential]$credential = New-Object System.Management.Automation.PSCredential ($ClientID, $secureSecret)
     $azureAccountParams += @{ 
-        Credential = $Credential 
+        Credential = $credential 
     }
 }
 else
