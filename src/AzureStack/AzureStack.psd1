@@ -132,9 +132,6 @@
                 - Replace parameter NodeList with BmciPAddress and ComputerName in cmd Add-AzsScaleUnitNode
             * Requires AzureStack Update 2002+, Please refer https://aka.ms/azpshmigration for breaking changes'
 
-            # Preview version
-            Prerelease = 'preview'
-
         } # End of PSData hashtable
 
     } # End of PrivateData hashtable
